@@ -1,0 +1,30 @@
+import React from 'react'
+
+// Interface
+
+interface FormWrapperPropTypes {
+    children: JSX.Element[],
+    btnText: string,
+    onSubmitHandler: () => void,
+    cssForSubmitBtn?: React.CSSProperties
+}
+
+const FormWrapper: React.FC<FormWrapperPropTypes> = ({children, btnText, onSubmitHandler, cssForSubmitBtn}): JSX.Element => {
+  return (
+    <form 
+        onSubmit={onSubmitHandler} 
+        className="w-[100%] h-[100%] flex flex-col"
+    >
+        {children}
+        <button 
+            type='submit' 
+            className="self-center bg-[#1e774e] text-white border-none outline-none px-[15px] py-[8px] rounded-md"
+            style={cssForSubmitBtn}
+        >
+            {btnText}
+        </button>
+    </form>
+  )
+}
+
+export default FormWrapper
