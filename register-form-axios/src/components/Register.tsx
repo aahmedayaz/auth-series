@@ -1,18 +1,54 @@
 import React, { useState } from 'react'
 import FormWrapper from './FormWrapper'
 import Input from './Input'
-import { start } from 'repl'
 
 const Register: React.FC = (): JSX.Element => {
 
     // ------------------ States ------------------  
-    const [username, setUsername] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [username, setUsername] = useState<string>('')
+    const [email, setEmail] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
+    
+    const [isUsernameValid, setIsUsernameValid] = useState<boolean>(false)
+    const [isEmailValid, setIsEmailValid] = useState<boolean>(false)
+    const [isPasswordValid, setIsPasswordValid] = useState<boolean>(false)
+    
+    const [usernameError, setUsernameError] = useState<string>('')
+    const [emailError, setEmailError] = useState<string>('')
+    const [passwordError, setPasswordError] = useState<string>('')
+
+    // ------------------ Regex --------------- 
+    const usernameRegex = /^[a-zA-Z]{3,12}$/;
+    const emailRegex = /^([^\s@]+@[^\s@]+\.[^\s@]+)$/;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9]{8,}$/;
 
     // ------------------ Functions --------------- 
-    const submitForm = () => {
+    const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
 
+        // Username Validation
+        if(!usernameRegex.test(username)){
+            setUsernameError("Username can only contain letters and must be between 3 and 12 characters long.")
+        }else{
+            setIsUsernameValid(true)
+            setUsernameError('')
+        }
+
+        // Email validation
+        if(!emailRegex.test(email)){
+            setEmailError("Please enter a valid email address.")
+        }else{
+            setIsEmailValid(true)
+            setEmailError('')
+        }
+
+        // Password validation
+        if(!passwordRegex.test(password)){
+            setPasswordError("Please include at least one uppercase letter and a number. It must be at least 8 characters long.")
+        }else{
+            setIsPasswordValid(true)
+            setPasswordError('')
+        }
     }
 
     const handleUsername = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -44,13 +80,15 @@ const Register: React.FC = (): JSX.Element => {
                             placeholder='Enter your username'
                             inputState={username}
                             onChangeHandler={(e) => handleUsername(e)}
+                            error={usernameError}
                         />
                         <Input 
                             label='Email'
-                            type='email'
+                            type='text'
                             placeholder='Enter your email address'
                             inputState={email}
                             onChangeHandler={(e) => handleEmail(e)}
+                            error={emailError}
                         />
                         <Input 
                             label='Password'
@@ -58,6 +96,7 @@ const Register: React.FC = (): JSX.Element => {
                             placeholder='Enter your password'
                             inputState={password}
                             onChangeHandler={(e) => handlePassword(e)}
+                            error={passwordError}
                         />
                     </FormWrapper>
                 </section>
