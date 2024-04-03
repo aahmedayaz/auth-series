@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import FormWrapper from './FormWrapper'
 import Input from './Input'
+import axios from '../api/axios'
 
 const Register: React.FC = (): JSX.Element => {
 
@@ -21,9 +22,12 @@ const Register: React.FC = (): JSX.Element => {
     const usernameRegex = /^[a-zA-Z]{3,12}$/;
     const emailRegex = /^([^\s@]+@[^\s@]+\.[^\s@]+)$/;
     const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9]{8,}$/;
+    
+    // ------------------ Regex --------------- 
+    const REGISTER_URL = '/register'
 
     // ------------------ Functions --------------- 
-    const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+    const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         // Username Validation
@@ -48,6 +52,25 @@ const Register: React.FC = (): JSX.Element => {
         }else{
             setIsPasswordValid(true)
             setPasswordError('')
+        }
+
+
+        if(isUsernameValid && isEmailValid && isPasswordValid){
+            try {
+                const response = await axios.post(REGISTER_URL, 
+                    {username, email, password},
+                    {
+                        headers: {
+                            "Content-Type" : "application/json"
+                        }, 
+                        withCredentials: true
+                    }
+                    )
+                const data = await response.data
+                console.log(data)
+            } catch (error) {
+                console.log(error)
+            }
         }
     }
 
