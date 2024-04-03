@@ -23,7 +23,7 @@ const Register: React.FC = (): JSX.Element => {
     const emailRegex = /^([^\s@]+@[^\s@]+\.[^\s@]+)$/;
     const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9]{8,}$/;
     
-    // ------------------ Regex --------------- 
+    // ------------------ URL --------------- 
     const REGISTER_URL = '/register'
 
     // ------------------ Functions --------------- 
